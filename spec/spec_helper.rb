@@ -25,6 +25,14 @@ RSpec.configure do |config|
   end
 end
 
+class StrippedString < ActiveRecord::Type::String
+  def cast(value)
+    super(value.presence&.strip)
+  end
+end
+
+ActiveRecord::Type.register(:stripped_string, StrippedString)
+
 ActiveRecord::Base.establish_connection(
   adapter: "sqlite3",
   database: ":memory:"
